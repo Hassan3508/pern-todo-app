@@ -6,11 +6,11 @@ const router = Router();
 // create a new todo
 router.post("/", async (req, res) => {
   try {
-    const { description } = req.body;
+    const { description, completed } = req.body;
 
     const newTodo = await pool.query(
-      "INSERT INTO todo (description) VALUES ($1) RETURNING *",
-      [description]
+      "INSERT INTO todo (description) VALUES ($1, $2) RETURNING *",
+      [description, completed || false]
     );
 
     res.json(newTodo.rows[0]);
